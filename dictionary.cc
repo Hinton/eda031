@@ -48,20 +48,17 @@ bool Dictionary::contains(const string& word) const {
 }
 
 vector<string> Dictionary::get_suggestions(const string& word) const {
-	vector<Word> suggestions;
+	vector<string> suggestions;
 	add_trigram_suggestions(suggestions, word);
 	rank_suggestions(suggestions, word);
 	trim_suggestions(suggestions);
 
-	vector<string> s;
-	for (Word w : suggestions) {
-		s.push_back(w.get_word());
-	}
-
-	return s;
+	return suggestions;
 }
 
-void Dictionary::add_trigram_suggestions(vector<Word> suggestions, const string &word) const {
+
+
+void Dictionary::add_trigram_suggestions(vector<string> &suggestions, const string &word) const {
 	// Search the dictionary and find candidates for corrections (section 2.3).
 	// To begin with, the words in the dictionary which have approximately the
 	// same number of letters (plus/minus one letter) as the misspelled word
@@ -70,10 +67,30 @@ void Dictionary::add_trigram_suggestions(vector<Word> suggestions, const string 
 	// A trigram is three adjacent letters — for example, the word summer
 	// contains the trigrams sum umm mme mer.
 
+	vector<Word> possible_words;
 
+	possible_words.insert(possible_words.end(), words[word.size()].begin(), words[word.size()].end());
+	possible_words.insert(possible_words.end(), words[word.size()+1].begin(), words[word.size()+1].end());
+	possible_words.insert(possible_words.end(), words[word.size()-1].begin(), words[word.size()-1].end());
+
+
+	// Generate the trigram for word.
+	std::vector<string> tri;
+	for (int i = 0; i < static_cast<int>(word.length()) - 3; i++) {
+		string w = word.substr(i, 3);
+		transform(w.begin(), w.end(), w.begin(), ::tolower);
+
+		tri.insert(tri.begin(), w);
+	}
+
+	for (Word w : possible_words) {
+		if (w.get_matches(tri) * 2 >= tri.size()) {
+			suggestions.push_back(w.get_word());
+		}
+	}
 }
 
-void Dictionary::rank_suggestions(vector<Word> suggestions, const string &word) const {
+void Dictionary::rank_suggestions(vector<string> &suggestions, const string &word) const {
 	// Sort the candidate list so the “best” candidates are first in the list
 	// (section 2.4). The sort key is the cost to change the misspelled word
 	// to one of the candidate words.
@@ -81,8 +98,8 @@ void Dictionary::rank_suggestions(vector<Word> suggestions, const string &word) 
 
 }
 
-void Dictionary::trim_suggestions(vector<Word> suggestions) const {
+void Dictionary::trim_suggestions(vector<string> &suggestions) const {
 	// Keep the first 5 candidates in the list (section 2.5).
 
-	
+
 }
