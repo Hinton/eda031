@@ -19,11 +19,11 @@ Dictionary::Dictionary() {
 		std::string::size_type pos = str.find(' ');
 		if (pos != std::string::npos)
 		{
-			//words.insert(str.substr(0, pos));
+			words.insert(new Word(str.substr(0, pos)));
 		}
 		else
 		{
-			//words.insert(str);
+			words.insert(new Word(str));
 		}
 	}
 }
