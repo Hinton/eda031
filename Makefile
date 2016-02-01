@@ -18,17 +18,13 @@ LDFLAGS =   -g# -L ./
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = copy
+PROGS = copy spell
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 copy: copy.o
-
-#ltest: ltest.o #list.o
-#hello: hello.o
-#encode: encode.o #coding.o
-#decode: decode.o
+spell: spell.o dictionary.o
 
 # Phony targets
 .PHONY: all clean
