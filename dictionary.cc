@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <unordered_set>
+#include <sstream>
 #include "word.h"
 #include "dictionary.h"
 
@@ -13,33 +15,36 @@ Dictionary::Dictionary() {
 	ifstream in;
 	in.open("words.txt");
 
-	std::string str;
-	while (std::getline(in, str))
-	{
-		std::string::size_type pos = str.find(' ');
-		if (pos != std::string::npos)
-		{
-			words.insert(new Word(str.substr(0, pos)));
+	string line;
+	while (getline(in, line)) {
+		stringstream lineStream(line);
+
+		string word;
+		lineStream >> word;
+
+		int count;
+		lineStream >> count;
+
+		vector<string> trigrams;
+		for (int i = 0; i < count; i++) {
+			string t;
+			in >> t;
+
+			trigrams.push_back(t);
 		}
-		else
-		{
-			words.insert(new Word(str));
-		}
+
+		words[word.size()].push_back(Word(word, trigrams));
 	}
 }
 
 bool Dictionary::contains(const string& word) const {
-
-	for (vector<Word>::iterator it = words.begin(); it != words.end(); ++it) {
-		if (*it->get_word().compare(word) == 0) {
+	for (Word w : words[word.size()]) {
+		if (w.get_word().compare(word) == 0) {
 			return true;
 		}
 	}
 
 	return false;
-
-	//std::unordered_set<std::string>::const_iterator got = words.find(word);
-	//return got != words.end();
 }
 
 vector<string> Dictionary::get_suggestions(const string& word) const {
