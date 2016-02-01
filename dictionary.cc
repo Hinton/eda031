@@ -48,21 +48,27 @@ bool Dictionary::contains(const string& word) const {
 }
 
 vector<string> Dictionary::get_suggestions(const string& word) const {
-	vector<string> suggestions;
+	vector<Word> suggestions;
 	add_trigram_suggestions(suggestions, word);
 	rank_suggestions(suggestions, word);
 	trim_suggestions(suggestions);
-	return suggestions;
+
+	vector<string> s;
+	for (Word w : suggestions) {
+		s.push_back(w.get_word());
+	}
+
+	return s;
 }
 
-void Dictionary::add_trigram_suggestions(std::vector<std::string> vector, const std::string &basic_string) const {
+void Dictionary::add_trigram_suggestions(vector<Word> suggestions, const string &word) const {
 
 }
 
-void Dictionary::rank_suggestions(std::vector<std::string> vector, const std::string &basic_string) const {
+void Dictionary::rank_suggestions(vector<Word> suggestions, const string &word) const {
 
 }
 
-void Dictionary::trim_suggestions(std::vector<std::string> vector) const {
+void Dictionary::trim_suggestions(vector<Word> suggestions) const {
 
 }
