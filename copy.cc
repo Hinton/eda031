@@ -13,7 +13,7 @@ string trigrams(string word) {
         return "0";
     }
 
-    for (int i = 0; i < static_cast<int>(word.length()) - 3; i++) {
+    for (int i = 0; i < static_cast<int>(word.length()) - 2; i++) {
         string w = word.substr(i, 3);
         transform(w.begin(), w.end(), w.begin(), ::tolower);
 

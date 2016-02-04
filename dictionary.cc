@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <unordered_set>
 #include <sstream>
+#include <map>
 #include "word.h"
 #include "dictionary.h"
 
@@ -76,12 +77,13 @@ void Dictionary::add_trigram_suggestions(vector<string> &suggestions, const stri
 
 	// Generate the trigram for word.
 	std::vector<string> tri;
-	for (int i = 0; i < static_cast<int>(word.length()) - 3; i++) {
+	for (int i = 0; i < static_cast<int>(word.length()) - 2; i++) {
 		string w = word.substr(i, 3);
 		transform(w.begin(), w.end(), w.begin(), ::tolower);
-
+cout << w << " ";
 		tri.insert(tri.begin(), w);
 	}
+	sort(tri.begin(), tri.end());
 
 	for (Word w : possible_words) {
 		if (w.get_matches(tri) * 2 >= tri.size()) {
@@ -90,16 +92,42 @@ void Dictionary::add_trigram_suggestions(vector<string> &suggestions, const stri
 	}
 }
 
+unsigned int edit_distance(const std::string& s1, const std::string& s2)
+{
+	const std::size_t len1 = s1.size(), len2 = s2.size();
+	std::vector<std::vector<unsigned int>> d(len1 + 1, std::vector<unsigned int>(len2 + 1));
+
+	d[0][0] = 0;
+	for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
+	for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+
+	for(unsigned int i = 1; i <= len1; ++i)
+		for(unsigned int j = 1; j <= len2; ++j)
+			// note that std::min({arg1, arg2, arg3}) works only in C++11,
+			// for C++98 use std::min(std::min(arg1, arg2), arg3)
+			d[i][j] = std::min({ d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) });
+	return d[len1][len2];
+}
+
 void Dictionary::rank_suggestions(vector<string> &suggestions, const string &word) const {
 	// Sort the candidate list so the “best” candidates are first in the list
 	// (section 2.4). The sort key is the cost to change the misspelled word
 	// to one of the candidate words.
 
+	map<string,int> cost;
+	for (string s : suggestions) {
+		cost[s] = edit_distance(s, word);
+	}
 
+	sort(suggestions.begin(), suggestions.end(), [&cost](const string& lhs, const string& rhs)
+	{
+		return cost[lhs] < cost[rhs];
+	});
 }
 
 void Dictionary::trim_suggestions(vector<string> &suggestions) const {
 	// Keep the first 5 candidates in the list (section 2.5).
-
-
+	if (suggestions.size() > 5) {
+		suggestions.resize(5);
+	}
 }
