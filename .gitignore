@@ -29,3 +29,11 @@
 
 *.d
 .idea
+
+# Visual Studio project files
+*.vs
+*.suo
+*.sdf
+*.sln
+*.vcxproj
+*.vcxproj.filters
