@@ -29,7 +29,7 @@ Dictionary::Dictionary() {
 		vector<string> trigrams;
 		for (int i = 0; i < count; i++) {
 			string t;
-			in >> t;
+			lineStream >> t;
 
 			trigrams.push_back(t);
 		}
@@ -84,20 +84,11 @@ void Dictionary::add_trigram_suggestions(vector<string> &suggestions, const stri
 	}
 	sort(tri.begin(), tri.end());
 
-	cout << "Size of possible words: " << possible_words.size() << endl;
-
 	for (Word w : possible_words) {
-		// Added test below for example word 'amazing'. Trig matches are not correct, something wrong with get_matches in word.cc
-		if (w.get_word().compare("amazing") == 0) {
-			cout << "'amazing' was in possible_words. Trig matches: " << w.get_matches(tri) << endl;
-		} 
-
 		if (w.get_matches(tri) * 2 >= tri.size()) {
 			suggestions.push_back(w.get_word());
 		}
 	}
-
-	cout << "Size of suggestions: " << suggestions.size() << endl;
 }
 
 unsigned int edit_distance(const std::string& s1, const std::string& s2)
