@@ -6,62 +6,67 @@
 
 using namespace std;
 
-vector<int> findPrimes(int m) {
-	vector<int> primes;
+/** Finds primes in range [0,m] and stores in vector enums as C or P, returns largest prime within [0,m] */
+int findPrimes(vector<char>& enums, int m) {
+	int lastPrime = 0;
+
+	/** Initial values */
+	for (int i = 0; i < m; i++) {
+		enums.push_back('P');
+	}
+	enums[0] = 'C';
+	enums[1] = 'C';
+
+	/** Find composites and mark them in enums */
 	int upperBoundSquareRoot = (int)sqrt((double)m);
 	bool *isComposite = new bool[m + 1];
 	memset(isComposite, 0, sizeof(bool) * (m + 1));
+
 	for (int i = 2; i <= upperBoundSquareRoot; i++) {
 		if (!isComposite[i]) {
-			primes.push_back(i);
-			for (int k = i * i; k <= m; k += i)
+			for (int k = i * i; k <= m; k += i) {
 				isComposite[k] = true;
+				enums[k] = 'C';
+			}
 		}
 	}
-	for (int i = upperBoundSquareRoot; i <= m; i++)
-		if (!isComposite[i])
-			primes.push_back(i);
+
+	/** Find largest prime in [0,m] */
+	for (int i = upperBoundSquareRoot; i <= m; i++) {
+		if (!isComposite[i]) {
+			lastPrime = i;
+		}
+	}
+
 	delete[] isComposite;
 
-	return primes;
+	return lastPrime;
 }
 
 int main() {
-	int m = 35;
-	string s(m, 'P');
-	s[0] = 'C';
-	s[1] = 'C';
+	int largestLimit = 100000;
+	int printLimit = 200;
+	vector<char> primeEnum;
 
-	/** Initial printouts */
-	cout << "*** Finding primes in the first " << m << " numbers:" << endl;
-	cout << "\t\t\t";
-	int i = 0;
-	while (i < m) {
-		if (i + 10 <= m) {
-			cout << "0123456789";
-		}
-		else {
-			for (int j = 0; j < (m - i); j++) {
-				cout << j;
+	/** Sieve of Eratosthenes */
+	int largestPrime = findPrimes(primeEnum, largestLimit);
+
+	/** Print the primes in [0,printLimit] */
+	cout << "*** Primes in the first " << printLimit << " numbers:" << endl;
+	cout << "[";
+	for (int i = 0; i < printLimit; i++) {
+		if (primeEnum[i] == 'P') {
+			if (i != printLimit - 1) {
+				cout << i << " ";
+			}
+			else {
+				cout << i;
 			}
 		}
-		i += 10;
 	}
-	cout << endl;
+	cout << "]" << endl;
 
-	cout << "Initial:\t\t" << s << endl;
-
-	/** Sieve of Eratosthenes, print first 200 primes */
-
-	for (int prime : findPrimes(m)) {
-		cout << prime << " ";
-	}
-	cout << endl;
-
-	/** Sieve of Eratosthenes, print largest prime under 100,000 */
-	cout << "\n*** Finding the largest prime in the first 100,000 numbers:" << endl;
-	vector<int> p = findPrimes(100000);
-	cout << p[p.size() - 1] << endl;
-
-	return 0;
+	/** Print the largest prime in [0,largestLimit] */
+	cout << "\n*** The largest prime in the first 100,000 numbers:" << endl;
+	cout << largestPrime << endl;
 }
