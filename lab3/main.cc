@@ -9,6 +9,5 @@ int main() {
     TagRemover tr(cin);
     tr.print(cout);
 
-    //cout << "Hello, World!" << endl;
     return 0;
 }

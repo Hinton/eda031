@@ -30,7 +30,6 @@ int Date::getDay() const {
 }
 
 void Date::next() {
-
     day++;
     if (day > daysPerMonth[month]) {
         day = 1;
@@ -40,7 +39,6 @@ void Date::next() {
         month = 1;
         year++;
     }
-
 }
 
 std::ostream& operator<<(std::ostream& os, const Date& d)
