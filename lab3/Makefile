@@ -7,23 +7,25 @@ CC  = g++
 # Define preprocessor, compiler, and linker flags. Uncomment the # lines
 # if you use clang++ and wish to use libc++ instead of GNU's libstdc++.
 # -g is for debugging.
-CPPFLAGS =  -std=c++11
-CXXFLAGS =  -O2 -Wall -Wextra -pedantic-errors -Wold-style-cast
+CPPFLAGS  = -std=c++11
+CXXFLAGS  = -O2 -Wall -Wextra -pedantic-errors -Wold-style-cast
 CXXFLAGS += -std=c++11 
 CXXFLAGS += -g
-#LDFLAGS =   -g -L ./
-#LDLIBS = -llab1
+LDFLAGS   = -g
 #CPPFLAGS += -stdlib=libc++
 #CXXFLAGS += -stdlib=libc++
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = tag
+PROGS = tag date prime representation_test string_cast_test
 
 all: $(PROGS)
 
-# Targets rely on implicit rules for compiling and linking
 tag: main.o tagremover.o
+date: date_test.o date.o
+prime: prime.o
+representation_test: representation_test.o date.o
+string_cast_test: string_cast_test.o date.o
 
 # Phony targets
 .PHONY: all clean
