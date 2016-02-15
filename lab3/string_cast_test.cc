@@ -2,19 +2,22 @@
 #include <string>
 #include <stdexcept>
 #include "date.h"
+#include <vector>
 
 using namespace std;
 
 template <typename T>
 T string_cast(const string& a) {
 
-	// istream?
 	istringstream str(a);
 	T object;
 
 	str >> object;
 
-	// TODO: Throw exception if wrong somehow?
+	if (str.fail()) {
+		throw invalid_argument(a);
+	}
+
 	return object;
 }
 

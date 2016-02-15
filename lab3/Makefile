@@ -17,11 +17,11 @@ LDFLAGS   = -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = tag date prime representation_test string_cast_test
+PROGS = main date prime representation_test string_cast_test
 
 all: $(PROGS)
 
-tag: main.o tagremover.o
+main: main.o tagremover.o
 date: date_test.o date.o
 prime: prime.o
 representation_test: representation_test.o date.o
