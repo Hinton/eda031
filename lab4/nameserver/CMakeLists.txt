@@ -3,5 +3,5 @@ project(nameserver)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES nstest.cc nameserverinterface.h vns.cc mns.cc)
+set(SOURCE_FILES nstest.cc nameserverinterface.h vns.cc mns.cc umns.cc)
 add_executable(nameserver ${SOURCE_FILES})

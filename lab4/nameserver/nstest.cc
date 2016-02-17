@@ -4,7 +4,7 @@
 #include "nameserverinterface.h"
 #include "vns.h"
 #include "mns.h"
-//#include "umns.h"
+#include "umns.h"
 //#include "hns.h"
 #include <iostream>
 #include <cassert>
@@ -40,9 +40,9 @@ int main() {
 	/*
 	 * Test the unordered map name server.
 	 */
-//	UMNS umns;
-//	test(umns);
-//	cout << "Unordered map passed ..." << endl;
+	UMNS umns;
+	test(umns);
+	cout << "Unordered map passed ..." << endl;
 	
 	/*
 	 * Test the hash name server.
