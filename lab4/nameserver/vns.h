@@ -5,6 +5,8 @@
 #ifndef NAMESERVER_VNS_H
 #define NAMESERVER_VNS_H
 
+#include <vector>
+#include "nameserverinterface.h"
 
 class VNS : public NameServerInterface {
 public:
@@ -31,6 +33,9 @@ public:
      * server.
      */
     IPAddress lookup(const HostName&) const;
+
+private:
+    std::vector<std::pair<HostName, IPAddress>> vec;
 };
 
 
