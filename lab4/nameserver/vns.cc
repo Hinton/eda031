@@ -42,5 +42,5 @@ IPAddress VNS::lookup(const HostName &h) const {
         return NON_EXISTING_ADDRESS;
     }
 
-    return (*it).second;
+    return it->second;
 }
