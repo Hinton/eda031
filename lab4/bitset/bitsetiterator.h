@@ -14,7 +14,8 @@ public:
 	BitsetIterator(Bitset::BitStorage* pb, std::size_t p) : ref(pb, p) {}
 
 	bool operator!=(const BitsetIterator& bsi) const {
-		return ref.pos != bsi.ref.pos;
+		// Check if position is not equal, or pbits is not equal.
+		return (ref.pos != bsi.ref.pos) || (ref.p_bits != bsi.ref.p_bits);
 	}
 
 	BitsetIterator& operator++() {
